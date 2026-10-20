@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday My Love ❤️</title>
+  <style>
+    :root {
+      --bg-gingham: repeating-conic-gradient(#f88 0% 25%, #fff 0% 50%) 50% / 40px 40px;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --primary-red: #d32f2f;
+      --accent-pink: #ffeb3b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Georgia', serif; }
+
+    body {
+      background: var(--bg-gingham);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 800px;
+      min-height: 90vh;
+      background: var(--card-bg);
+      border: 10px solid var(--primary-red);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      padding: 30px;
+      position: relative;
+      margin: 20px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .screen.active { display: flex; }
+
+    /* Keypad Lock Screen */
+    .lock-container { text-align: center; width: 100%; }
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      max-width: 300px;
+      margin: 20px auto;
+    }
+    .key-btn {
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      border: 2px solid var(--primary-red);
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .key-btn:hover { background: var(--primary-red); color: white; }
+    .passcode-dots { font-size: 30px; letter-spacing: 10px; color: var(--primary-red); height: 40px; }
+
+    /* Polaroid Frames */
+    .polaroid {
+      background: white;
+      padding: 15px 15px 40px 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      transform: rotate(-3deg);
+      border: 1px solid #ddd;
+      margin: 15px 0;
+      text-align: center;
+    }
+    .polaroid img { width: 100%; max-width: 250px; height: 250px; object-fit: cover; }
+
+    /* Gifts Grid */
+    .gifts-grid {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .gift-box {
+      width: 180px;
+      height: 180px;
+      background: #fff0f0;
+      border: 3px dashed var(--primary-red);
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .gift-box:hover { transform: scale(1.05); background: #ffe0e0; }
+    .gift-box span { font-size: 50px; }
+
+    /* Modal / Popup */
+    .modal {
+      display: none;
+      position: fixed;
+      top:0; left:0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .close-btn {
+      position: absolute; right: 15px; top: 10px; font-size: 24px; cursor: pointer;
+    }
+
+    /* Floating Edit Controls */
+    .admin-toggle {
+      position: fixed; bottom: 20px; left: 20px;
+      background: var(--primary-red); color: white;
+      border: none; padding: 10px 15px; border-radius: 50px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCREEN 1: PASSCODE LOCK -->
+  <div id="lockScreen" class="screen active">
+    <h2>Enter Secret Passcode 🔐</h2>
+    <div class="polaroid">
+      <img id="lockImg" src="https://via.placeholder.com/250?text=Us+Together" alt="Us">
+      <p style="margin-top: 10px; font-family: cursive;">Our Special Date</p>
+    </div>
+    <div class="passcode-dots" id="passDisplay">____</div>
+    <div class="keypad-grid">
+      <button class="key-btn" onclick="pressKey('1')">1</button>
+      <button class="key-btn" onclick="pressKey('2')">2</button>
+      <button class="key-btn" onclick="pressKey('3')">3</button>
+      <button class="key-btn" onclick="pressKey('4')">4</button>
+      <button class="key-btn" onclick="pressKey('5')">5</button>
+      <button class="key-btn" onclick="pressKey('6')">6</button>
+      <button class="key-btn" onclick="pressKey('7')">7</button>
+      <button class="key-btn" onclick="pressKey('8')">8</button>
+      <button class="key-btn" onclick="pressKey('9')">9</button>
+      <button class="key-btn" onclick="pressKey('C')">C</button>
+      <button class="key-btn" onclick="pressKey('0')">0</button>
+      <button class="key-btn" onclick="pressKey('OK')">OK</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: MAIN BIRTHDAY PAGE -->
+  <div id="mainScreen" class="screen">
+    <h1 style="color: var(--primary-red); font-size: 36px;">🎉 Happy Birthday Baby! 🎉</h1>
+    <p style="margin: 10px 0;">You are my absolute favorite person in the world ❤️</p>
+    
+    <div class="polaroid">
+      <img id="mainImg" src="https://via.placeholder.com/250?text=Birthday+Boy" alt="Birthday Boy">
+      <p style="margin-top: 10px; font-weight: bold;">Happy Birthday My Love!</p>
+    </div>
+
+    <h2 style="margin-top: 20px;">Choose Your Gift 🎁</h2>
+    <div class="gifts-grid">
+      <div class="gift-box" onclick="openGift(1)">
+        <span>💌</span>
+        <p>5 Reasons I Love You</p>
+      </div>
+      <div class="gift-box" onclick="openGift(2)">
+        <span>📜</span>
+        <p>Love Letter</p>
+      </div>
+      <div class="gift-box" onclick="openGift(3)">
+        <span>📸</span>
+        <p>Photo Album</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GIFT MODAL -->
+  <div id="giftModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- EDIT PANEL BUTTON -->
+  <button class="admin-toggle" onclick="toggleEditPanel()">⚙️ Customize Photos & Text</button>
+
+  <!-- EDIT PANEL MODAL -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeEditModal()">&times;</span>
+      <h3>Customize Your Website</h3>
+      <br>
+      <label>Passcode (Default: 1234):</label><br>
+      <input type="text" id="passInput" value="1234" style="width:100%; padding:8px; margin-bottom:15px;"><br>
+
+      <label>Lock Screen Photo:</label><br>
+      <input type="file" accept="image/*" onchange="uploadImage(event, 'lockImg')"><br><br>
+
+      <label>Main Birthday Photo:</label><br>
+      <input type="file" accept="image/*" onchange="uploadImage(event, 'mainImg')"><br><br>
+
+      <label>Love Letter Text:</label><br>
+      <textarea id="letterInput" style="width:100%; height:100px; padding:8px;">Happy Birthday! Thank you for being the most amazing person in my life. I love you so much!</textarea><br><br>
+
+      <button onclick="closeEditModal()" style="padding:10px 20px; background:var(--primary-red); color:white; border:none; border-radius:5px; cursor:pointer;">Save Changes</button>
+    </div>
+  </div>
+
+  <script>
+    let correctPass = "1234";
+    let enteredPass = "";
+
+    function pressKey(key) {
+      if (key === 'C') {
+        enteredPass = "";
+      } else if (key === 'OK') {
+        if (enteredPass === correctPass) {
+          document.getElementById('lockScreen').classList.remove('active');
+          document.getElementById('mainScreen').classList.add('active');
+        } else {
+          alert("Incorrect Passcode! Try again 💕");
+          enteredPass = "";
+        }
+      } else {
+        if (enteredPass.length < 4) {
+          enteredPass += key;
+        }
+      }
+      document.getElementById('passDisplay').innerText = "*".repeat(enteredPass.length) || "____";
+    }
+
+    function openGift(num) {
+      const modal = document.getElementById('giftModal');
+      const body = document.getElementById('modalBody');
+      modal.style.display = "flex";
+
+      if (num === 1) {
+        body.innerHTML = `
+          <h2>5 Reasons I Love You ❤️</h2><br>
+          <ul style="text-align: left; line-height: 2;">
+            <li>1. Your warm and caring heart.</li>
+            <li>2. How you always know how to make me smile.</li>
+            <li>3. The way you look at me.</li>
+            <li>4. Your dedication to everything you do.</li>
+            <li>5. Simply because you are YOU!</li>
+          </ul>
+        `;
+      } else if (num === 2) {
+        const letter = document.getElementById('letterInput').value;
+        body.innerHTML = `
+          <h2>A Piece of My Heart ✉️</h2><br>
+          <p style="font-family: cursive; font-size: 18px; line-height: 1.6;">${letter}</p>
+        `;
+      } else if (num === 3) {
+        body.innerHTML = `
+          <h2>Our Photo Gallery 📸</h2><br>
+          <p>You can add and view all your beautiful memories here!</p>
+          <div style="margin-top:15px;">
+            <img id="albumImg1" src="https://via.placeholder.com/300?text=Memory+1" style="width:100%; border-radius:10px; margin-bottom:10px;">
+          </div>
+        `;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('giftModal').style.display = "none";
+    }
+
+    function toggleEditPanel() {
+      document.getElementById('editModal').style.display = "flex";
+    }
+
+    function closeEditModal() {
+      correctPass = document.getElementById('passInput').value;
+      document.getElementById('editModal').style.display = "none";
+    }
+
+    function uploadImage(event, targetId) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(targetId).src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</body>
+</html>
